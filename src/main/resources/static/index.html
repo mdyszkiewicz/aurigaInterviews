@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Input test json</title>
+
+</head>
+<body>
+<p>Example input: (you may do some changes, to see if the filter really works)</p>
+<form method="POST" action="filter" style="display: flex; align-items: flex-start">
+    <textarea cols="110" rows="37" name="jsonResponse" style="float:left">[
+    {   "2b727991-5ddb-4a42-82eb-13bbb2876a28": {
+            "agentVersion": "0.1.0",
+            "alertIds": ["0a45fa06-87ad-4ef7-ae30-f05d42beca22", "16597623-a5d1-4a21-8304-58c458aefd3b"],
+            "architecture": "x64",
+            "collector": {
+                "tenantId": "496e3cfd-672c-47ae-9dfb-0d840b0aed80",
+                "collectorId": "5316b276-18cc-4692-b89b-26ae22a0c4ef",
+                "collectorName": "Test_Collector"
+            },
+            "cpuModel": "Intel(R) Xeon(R) CPU E5-2673 v3 @ 2.40GHz",
+            "cpuNumber": 1,
+            "description": "Auriga Test Device",
+            "deviceId": "2b727991-5ddb-4a42-82eb-13bbb2876a28",
+            "discoveryDate": "2019-05-21T16:02:56.819",
+            "externalIp": "144.0.1.163",
+            "externalIpCordLat": "52.35",
+            "externalIpCordLong": "4.9167",
+            "externalIpDateUpdated":
+            "2019-06-10T09:33:07.932",
+            "ipAddresses": [{
+                "ipAddress": "1.0.0.4",
+                "ipFamily": "IPv4",
+                "macAddress": "01:1d:3a:20:da:2d"
+            }],
+            "isAgentConnected": true,
+            "lastSeenDate": "2019-06-10T09:46:00.176Z",
+            "name": "AurigaDC01",
+            "osCode": "Windows_NT",
+            "platform": "win32",
+            "registeredDate": "2019-05-21T16:02:56.819",
+            "release": "6.3.9600",
+            "updatesScriptLastRun": "2019-06-10T09:24:10"
+        }
+    }
+]
+    </textarea>
+    <button>Submit</button>
+    <span></span>
+</form>
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<script>
+$('button').click(function(e){
+    e.preventDefault();
+    $.ajax({
+        url: $('form').attr('action'),
+        method: $('form').attr('method'),
+        contentType: "application/json",
+        dataType: "json",
+        beforeSend: function(x) {
+            if (x && x.overrideMimeType) {
+              x.overrideMimeType("application/json;charset=UTF-8");
+            }
+          },
+        data: $('textarea').val(),
+        success: function(data){
+            let jsonTxt = JSON.stringify(data);
+            $('span').html('The response was:<br/>'+jsonTxt.replace(/,/g,",<br/>"));
+        },
+        error: function(data){
+            alert('error: '+data.responseJSON.error+', message: '+data.responseJSON.message);
+        }
+
+     });
+});
+
+</script>
+</body>
+</html>
